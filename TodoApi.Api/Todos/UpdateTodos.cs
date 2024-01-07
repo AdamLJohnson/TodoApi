@@ -36,27 +36,27 @@ public class UpdateTodoCommandHandler : IRequestHandler<UpdateTodoCommand, Resul
         await _repository.UpdateTodoAsync(todo);
         return todo;
     }
+}
 
-    public class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoCommand>
+public class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoCommand>
+{
+    private readonly ITodoRepository _repository;
+
+    public UpdateTodoCommandValidator(ITodoRepository repository)
     {
-        private readonly ITodoRepository _repository;
+        _repository = repository;
+        RuleFor(x => x.Task).NotEmpty();
+        RuleFor(x => x).MustAsync(IsUniqueAsync).WithName("Task").WithMessage("Task already exists");
+        RuleFor(x => x.Description).NotEmpty();
+    }
 
-        public UpdateTodoCommandValidator(ITodoRepository repository)
+    private async Task<bool> IsUniqueAsync(UpdateTodoCommand command, CancellationToken cancellationToken)
+    {
+        var todo = await _repository.GetToDoByTask(command.Task);
+        if (todo == null)
         {
-            _repository = repository;
-            RuleFor(x => x.Task).NotEmpty();
-            RuleFor(x => x).MustAsync(IsUniqueAsync).WithName("Task").WithMessage("Task already exists");
-            RuleFor(x => x.Description).NotEmpty();
+            return true;
         }
-
-        private async Task<bool> IsUniqueAsync(UpdateTodoCommand command, CancellationToken cancellationToken)
-        {
-            var todo = await _repository.GetToDoByTask(command.Task);
-            if (todo == null)
-            {
-                return true;
-            }
-            return todo.Id == command.Id;
-        }
+        return todo.Id == command.Id;
     }
 }
