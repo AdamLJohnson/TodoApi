@@ -1,0 +1,36 @@
+@TodoApi.Api_HostAddress = https://localhost:7203
+
+POST {{TodoApi.Api_HostAddress}}/api/todo
+Content-Type: application/json
+
+{
+    "id": "d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b",
+    "task": "Do something",
+    "description": "Do something important",
+    "isComplete": false
+}
+
+###
+
+GET {{TodoApi.Api_HostAddress}}/api/todo/d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b
+
+###
+PUT {{TodoApi.Api_HostAddress}}/api/todo/d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b
+Content-Type: application/json
+
+{
+    "id": "d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b",
+    "task": "",
+    "description": "Do something important",
+    "isComplete": true
+}
+
+###
+
+GET {{TodoApi.Api_HostAddress}}/api/todo
+
+###
+
+DELETE {{TodoApi.Api_HostAddress}}/api/todo/d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b
+
+###
