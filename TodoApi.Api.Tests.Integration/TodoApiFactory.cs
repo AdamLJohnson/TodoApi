@@ -9,6 +9,11 @@ using Testcontainers.PostgreSql;
 
 namespace TodoApi.Api.Tests.Integration
 {
+    [CollectionDefinition("TodoApiCollection")]
+    public class TodoApiCollection : ICollectionFixture<TodoApiFactory>
+    {
+    }
+
     public sealed class TodoApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifetime
     {
         private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()

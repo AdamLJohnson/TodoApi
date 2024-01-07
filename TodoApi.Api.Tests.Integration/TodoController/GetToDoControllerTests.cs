@@ -7,7 +7,8 @@ using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController;
 
-public class GetToDoControllerTests : IClassFixture<TodoApiFactory>
+[Collection("TodoApiCollection")]
+public class GetToDoControllerTests
 {
     private readonly HttpClient _client;
     private readonly Faker<Todo> _todoFaker = new Faker<Todo>()

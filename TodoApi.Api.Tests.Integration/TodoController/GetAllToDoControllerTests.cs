@@ -7,7 +7,8 @@ using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController;
 
-public class GetAllToDoControllerTests : IClassFixture<TodoApiFactory>
+[Collection("TodoApiCollection")]
+public class GetAllToDoControllerTests
 {
     private readonly HttpClient _client;
     private readonly Faker<Todo> _todoFaker = new Faker<Todo>()
@@ -23,7 +24,6 @@ public class GetAllToDoControllerTests : IClassFixture<TodoApiFactory>
     [Fact]
     public async Task GetAllToDo_ReturnsListOfTodos()
     {
-        Task.Delay(500).Wait();
         // Arrange
         var todo = _todoFaker.Generate();
         var createResponse = await _client.PostAsJsonAsync("/api/todo", todo);
