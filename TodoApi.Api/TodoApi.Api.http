@@ -4,23 +4,21 @@ POST {{TodoApi.Api_HostAddress}}/api/todo
 Content-Type: application/json
 
 {
-    "id": "d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b",
-    "task": "Do something",
+    "task": "",
     "description": "Do something important",
     "isComplete": false
 }
 
 ###
 
-GET {{TodoApi.Api_HostAddress}}/api/todo/d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b
+GET {{TodoApi.Api_HostAddress}}/api/todo/cc259813-051a-4492-b605-26b155c26679
 
 ###
-PUT {{TodoApi.Api_HostAddress}}/api/todo/d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b
+PUT {{TodoApi.Api_HostAddress}}/api/todo/cc259813-051a-4492-b605-26b155c26679
 Content-Type: application/json
 
 {
-    "id": "d0b9a0a0-4f1e-4b4d-8a5e-0b0b0b0b0b0b",
-    "task": "",
+    "task": "Test 1234",
     "description": "Do something important",
     "isComplete": true
 }

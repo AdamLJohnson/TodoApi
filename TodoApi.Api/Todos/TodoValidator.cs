@@ -1,7 +1,6 @@
 ﻿using FluentValidation;
-using TodoApi.Api.Domain;
 
-namespace TodoApi.Api.Validation
+namespace TodoApi.Api.Todos
 {
     public class TodoValidator : AbstractValidator<Todo>
     {

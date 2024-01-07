@@ -2,7 +2,6 @@
 using Npgsql;
 using System.Data;
 using Dapper;
-using TodoApi.Api.Domain;
 
 namespace TodoApi.Api.Database
 {

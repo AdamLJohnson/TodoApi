@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace TodoApi.Api.Domain
+namespace TodoApi.Api.Todos
 {
     [Table("todo")]
     public class Todo

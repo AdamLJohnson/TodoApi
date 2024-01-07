@@ -2,22 +2,27 @@ using FluentValidation;
 using TodoApi.Api.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using FluentValidation.AspNetCore;
-using TodoApi.Api.Repositories;
-using TodoApi.Api.Services;
+using MediatR;
 using TodoApi.Api.Validation;
+using TodoApi.Api.Todos;
+using TodoApi.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("TodoDb"));
 
 builder.Services.AddControllers();
-builder.Services.AddFluentValidationAutoValidation();
-builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.TryAddScoped<ITodoRepository, TodoRepository>();
-builder.Services.TryAddScoped<ITodoService, TodoService>();
+builder.Services.AddMediatR(c =>
+{
+    c.RegisterServicesFromAssemblyContaining<Program>();
+    c.AddValidation<CreateTodoCommand, Todo>();
+    c.AddValidation<UpdateTodoCommand, Todo?>();
+});
+
+builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

@@ -2,7 +2,10 @@
 using System.Net.Http.Json;
 using Bogus;
 using FluentAssertions;
-using TodoApi.Api.Domain;
+using Newtonsoft.Json;
+using TodoApi.Api.Contracts.Requests;
+using TodoApi.Api.Contracts.Responses;
+using TodoApi.Api.Todos;
 using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController;
@@ -11,8 +14,7 @@ namespace TodoApi.Api.Tests.Integration.TodoController;
 public class GetToDoControllerTests
 {
     private readonly HttpClient _client;
-    private readonly Faker<Todo> _todoFaker = new Faker<Todo>()
-        .RuleFor(t => t.Id, f => f.Random.Guid())
+    private readonly Faker<CreateTodoRequest> _todoFaker = new Faker<CreateTodoRequest>()
         .RuleFor(t => t.Task, f => f.Lorem.Word())
         .RuleFor(t => t.Description, f => f.Lorem.Sentence());
 
@@ -27,15 +29,17 @@ public class GetToDoControllerTests
         // Arrange
         var todo = _todoFaker.Generate();
         var createResponse = await _client.PostAsJsonAsync("/api/todo", todo);
-        var createdTodo = await createResponse.Content.ReadFromJsonAsync<Todo>();
+        var createdTodo = await createResponse.Content.ReadFromJsonAsync<TodoResponse>();
 
         // Act
         var response = await _client.GetAsync($"api/todo/{createdTodo!.Id}");
 
+        var responseContent = await response.Content.ReadAsStringAsync();
+        var todoResponse = JsonConvert.DeserializeObject<TodoResponse>(responseContent);
+
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.OK);
-        var todosResponse = await response.Content.ReadFromJsonAsync<Todo>();
-        todosResponse!.Should().BeEquivalentTo(createdTodo);
+        todoResponse!.Should().BeEquivalentTo(createdTodo);
 
         // Cleanup
         await _client.DeleteAsync($"/api/todo/{createdTodo!.Id}");
@@ -45,10 +49,9 @@ public class GetToDoControllerTests
     public async Task GetToDo_ReturnsNotFound()
     {
         // Arrange
-        var todo = _todoFaker.Generate();
 
         // Act
-        var response = await _client.GetAsync($"api/todo/{todo.Id}");
+        var response = await _client.GetAsync($"api/todo/{Guid.NewGuid()}");
 
         // Assert
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
