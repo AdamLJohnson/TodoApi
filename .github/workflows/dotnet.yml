@@ -27,10 +27,10 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal --logger:"trx;LogFilePath=test-results.trx"
-    # - name: Test Report
-    #   uses: dorny/test-reporter@v1
-    #   if: success() || failure()    # run this step even if previous step failed
-    #   with:
-    #     name: Tests            # Name of the check run which will be created
-    #     path: ToDoApi/**/*.trx    # Path to test results
-    #     reporter: dotnet-trx        # Format of test results
+    - name: Test Report
+      uses: dorny/test-reporter@v1
+      if: always()    # run this step even if previous step failed
+      with:
+        name: Test Results            # Name of the check run which will be created
+        path: '**/TestResults/*.trx'    # Path to test results
+        reporter: dotnet-trx        # Format of test results
