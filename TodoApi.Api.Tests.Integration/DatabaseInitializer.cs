@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Connections;
-using Npgsql;
+﻿using Npgsql;
 using System.Data;
 using Dapper;
 

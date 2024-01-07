@@ -8,9 +8,9 @@ namespace TodoApi.Api.Todos
         [Column("id")]
         public Guid Id { get; set; }
         [Column("task")]
-        public string Task { get; set; }
+        public string Task { get; set; } = string.Empty;
         [Column("description")]
-        public string Description { get; set; }
+        public string Description { get; set; } = string.Empty;
         [Column("is_complete")]
         public bool IsComplete { get; set; }
     }

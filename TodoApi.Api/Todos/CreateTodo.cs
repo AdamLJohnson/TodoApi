@@ -27,7 +27,7 @@ public class CreateTodoCommandHandler : IRequestHandler<CreateTodoCommand, Resul
             IsComplete = command.IsComplete
         };
 
-        await _repository.CreateTodoAsync(todo);
+        await _repository.CreateAsync(todo);
         return todo;
     }
 }
@@ -46,7 +46,7 @@ public class CreateTodoCommandValidator : AbstractValidator<CreateTodoCommand>
 
     private async Task<bool> IsUniqueAsync(CreateTodoCommand command, string task, CancellationToken cancellationToken)
     {
-        var todo = await _repository.TodoExistsAsync(task);
+        var todo = await _repository.ExistsAsync(task);
         return !todo;
     }
 }

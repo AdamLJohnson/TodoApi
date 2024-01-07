@@ -15,7 +15,7 @@ public class DeleteTodoCommandHandler : IRequestHandler<DeleteTodoCommand, bool>
 
     public async Task<bool> Handle(DeleteTodoCommand command, CancellationToken cancellationToken)
     {
-        var result = await _repository.DeleteTodoAsync(command.Id);
+        var result = await _repository.DeleteAsync(command.Id);
         return result;
     }
 }

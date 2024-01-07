@@ -5,7 +5,6 @@ using FluentAssertions;
 using Newtonsoft.Json;
 using TodoApi.Api.Contracts.Requests;
 using TodoApi.Api.Contracts.Responses;
-using TodoApi.Api.Todos;
 using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController;
@@ -34,7 +33,7 @@ public class UpdateToDoControllerTests
         var updatedTodo = _todoFaker.Generate();
 
         // Act
-        var response = await _client.PutAsJsonAsync($"api/todo/{createdTodo.Id}", updatedTodo);
+        var response = await _client.PutAsJsonAsync($"api/todo/{createdTodo!.Id}", updatedTodo);
 
         var responseContent = await response.Content.ReadAsStringAsync();
         var todoResponse = JsonConvert.DeserializeObject<TodoResponse>(responseContent);
@@ -92,7 +91,7 @@ public class UpdateToDoControllerTests
         todo.Task = todo2.Task;
 
         // Act
-        var response = await _client.PutAsJsonAsync($"api/todo/{createdTodo.Id}", todo);
+        var response = await _client.PutAsJsonAsync($"api/todo/{createdTodo!.Id}", todo);
 
         var responseContent = await response.Content.ReadAsStringAsync();
         var errorResponse = JsonConvert.DeserializeObject<ValidationFailureResponse>(responseContent);

@@ -5,14 +5,14 @@ namespace TodoApi.Api.Todos;
 
 public interface ITodoRepository
 {
-    Task<IEnumerable<Todo>> GetTodos();
-    Task<Todo> GetTodoById(Guid id);
-    Task<Todo> CreateTodoAsync(Todo todo);
-    Task<Todo> UpdateTodoAsync(Todo todo);
-    Task<bool> DeleteTodoAsync(Guid id);
-    Task<bool> TodoExistsAsync(Guid id);
-    Task<bool> TodoExistsAsync(string task);
-    Task<Todo?> GetToDoByTask(string task);
+    Task<IEnumerable<Todo>> GetAllAsync();
+    Task<Todo?> GetAsync(Guid id);
+    Task<Todo?> GetAsync(string task);
+    Task<Todo> CreateAsync(Todo todo);
+    Task<Todo> UpdateAsync(Todo todo);
+    Task<bool> DeleteAsync(Guid id);
+    Task<bool> ExistsAsync(Guid id);
+    Task<bool> ExistsAsync(string task);
 }
 
 public class TodoRepository : ITodoRepository
@@ -24,10 +24,10 @@ public class TodoRepository : ITodoRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Todo>> GetTodos() => await _context.Todos.ToListAsync();
-    public async Task<Todo> GetTodoById(Guid id) => await _context.Todos.FindAsync(id);
+    public async Task<IEnumerable<Todo>> GetAllAsync() => await _context.Todos.ToListAsync();
+    public async Task<Todo?> GetAsync(Guid id) => await _context.Todos.FindAsync(id);
 
-    public async Task<Todo> CreateTodoAsync(Todo todo)
+    public async Task<Todo> CreateAsync(Todo todo)
     {
         await _context.Todos.AddAsync(todo);
         await _context.SaveChangesAsync();
@@ -35,7 +35,7 @@ public class TodoRepository : ITodoRepository
         return todo;
     }
 
-    public async Task<Todo> UpdateTodoAsync(Todo todo)
+    public async Task<Todo> UpdateAsync(Todo todo)
     {
         _context.Entry(todo).State = EntityState.Modified;
         await _context.SaveChangesAsync();
@@ -43,7 +43,7 @@ public class TodoRepository : ITodoRepository
         return todo;
     }
 
-    public async Task<bool> DeleteTodoAsync(Guid id)
+    public async Task<bool> DeleteAsync(Guid id)
     {
         var todo = await _context.Todos.FindAsync(id);
         if (todo == null)
@@ -55,7 +55,7 @@ public class TodoRepository : ITodoRepository
         return result > 0;
     }
 
-    public async Task<bool> TodoExistsAsync(Guid id) => await _context.Todos.AnyAsync(e => e.Id == id);
-    public async Task<bool> TodoExistsAsync(string task) => await _context.Todos.AnyAsync(e => e.Task == task);
-    public async Task<Todo?> GetToDoByTask(string task) => await _context.Todos.FirstOrDefaultAsync(e => e.Task == task);
+    public async Task<bool> ExistsAsync(Guid id) => await _context.Todos.AnyAsync(e => e.Id == id);
+    public async Task<bool> ExistsAsync(string task) => await _context.Todos.AnyAsync(e => e.Task == task);
+    public async Task<Todo?> GetAsync(string task) => await _context.Todos.FirstOrDefaultAsync(e => e.Task == task);
 }

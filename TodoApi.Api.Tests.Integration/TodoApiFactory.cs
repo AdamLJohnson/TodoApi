@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using TodoApi.Api.Database;
 using Xunit;
 using Testcontainers.PostgreSql;
@@ -50,7 +49,7 @@ namespace TodoApi.Api.Tests.Integration
             await dbInitializer.InitializeAsync();
         }
 
-        public Task DisposeAsync()
+        public new Task DisposeAsync()
         {
             return _dbContainer.DisposeAsync().AsTask();
         }

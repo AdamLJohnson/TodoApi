@@ -7,7 +7,9 @@ namespace TodoApi.Api.Todos;
 public record UpdateTodoCommand
     (Guid Id, string Task, string Description, bool IsComplete) : IValidatableRequest<Result<Todo, ValidationFailed>>;
 
+#pragma warning disable CS8631
 public class UpdateTodoCommandHandler : IRequestHandler<UpdateTodoCommand, Result<Todo?, ValidationFailed>>
+#pragma warning restore CS8631
 {
     private readonly ITodoRepository _repository;
 
@@ -27,13 +29,13 @@ public class UpdateTodoCommandHandler : IRequestHandler<UpdateTodoCommand, Resul
             IsComplete = command.IsComplete
         };
 
-        var exists = await _repository.TodoExistsAsync(todo.Id);
+        var exists = await _repository.ExistsAsync(todo.Id);
         if (!exists)
         {
             return default(Todo?);
         }
 
-        await _repository.UpdateTodoAsync(todo);
+        await _repository.UpdateAsync(todo);
         return todo;
     }
 }
@@ -52,7 +54,7 @@ public class UpdateTodoCommandValidator : AbstractValidator<UpdateTodoCommand>
 
     private async Task<bool> IsUniqueAsync(UpdateTodoCommand command, CancellationToken cancellationToken)
     {
-        var todo = await _repository.GetToDoByTask(command.Task);
+        var todo = await _repository.GetAsync(command.Task);
         if (todo == null)
         {
             return true;

@@ -15,7 +15,7 @@ public class GetTodoQueryHandler : IRequestHandler<GetTodoQuery, Todo?>
 
     public async Task<Todo?> Handle(GetTodoQuery query, CancellationToken cancellationToken)
     {
-        var todo = await _repository.GetTodoById(query.Id);
+        var todo = await _repository.GetAsync(query.Id);
         return todo;
     }
 }

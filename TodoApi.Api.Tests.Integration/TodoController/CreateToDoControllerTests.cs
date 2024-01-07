@@ -1,17 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 using Bogus;
 using FluentAssertions;
 using Newtonsoft.Json;
 using TodoApi.Api.Contracts.Requests;
 using TodoApi.Api.Contracts.Responses;
-using TodoApi.Api.Todos;
-using TodoApi.Api.Validation;
 using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController
@@ -43,7 +36,7 @@ namespace TodoApi.Api.Tests.Integration.TodoController
 
             // Assert
             response.StatusCode.Should().Be(HttpStatusCode.Created);
-            response.Headers.Location.Should().Be($"http://localhost/api/todo/{todoResponse.Id}");
+            response.Headers.Location.Should().Be($"http://localhost/api/todo/{todoResponse!.Id}");
             todoResponse.Should().BeEquivalentTo(todo);
 
             // Cleanup

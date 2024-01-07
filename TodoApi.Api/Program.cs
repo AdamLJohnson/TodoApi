@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using MediatR;
 using TodoApi.Api.Validation;
 using TodoApi.Api.Todos;
-using TodoApi.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,18 +18,18 @@ builder.Services.AddMediatR(c =>
 {
     c.RegisterServicesFromAssemblyContaining<Program>();
     c.AddValidation<CreateTodoCommand, Todo>();
+#pragma warning disable CS8631
     c.AddValidation<UpdateTodoCommand, Todo?>();
+#pragma warning restore CS8631
 });
 
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

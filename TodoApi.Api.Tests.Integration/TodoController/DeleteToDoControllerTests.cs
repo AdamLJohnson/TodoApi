@@ -4,7 +4,6 @@ using Bogus;
 using FluentAssertions;
 using TodoApi.Api.Contracts.Requests;
 using TodoApi.Api.Contracts.Responses;
-using TodoApi.Api.Todos;
 using Xunit;
 
 namespace TodoApi.Api.Tests.Integration.TodoController;
