@@ -1,17 +1,12 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET Build and Test
+name: CI Build and Test
 
 on:
-  push:
+  pull_request:
     branches: [ "main" ]
   workflow_dispatch:
-
-permissions:
-  contents: read
-  actions: read
-  checks: write
 
 jobs:
   build:
@@ -30,10 +25,3 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal --logger:"trx;LogFilePath=test-results.trx"
-    - name: Test Report
-      uses: dorny/test-reporter@v1
-      if: always()    # run this step even if previous step failed
-      with:
-        name: Test Results            # Name of the check run which will be created
-        path: '**/TestResults/*.trx'    # Path to test results
-        reporter: dotnet-trx        # Format of test results
