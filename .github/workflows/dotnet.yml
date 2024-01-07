@@ -12,6 +12,7 @@ permissions:
   contents: read
   actions: read
   checks: write
+  pull-requests: write
 
 jobs:
   build:
@@ -37,3 +38,9 @@ jobs:
         name: Test Results            # Name of the check run which will be created
         path: '**/TestResults/*.trx'    # Path to test results
         reporter: dotnet-trx        # Format of test results
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        files: |
+          '**/TestResults/*.trx'
