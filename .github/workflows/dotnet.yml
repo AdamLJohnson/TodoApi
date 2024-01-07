@@ -12,7 +12,6 @@ permissions:
   contents: read
   actions: read
   checks: write
-  pull-requests: write
 
 jobs:
   build:
@@ -31,12 +30,6 @@ jobs:
       run: dotnet build --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal --logger:"trx;LogFilePath=test-results.trx"
-    - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      if: always()
-      with:
-        files: |
-          '**/TestResults/*.trx'
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: always()    # run this step even if previous step failed
