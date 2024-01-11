@@ -30,11 +30,12 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI((options =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    options.RoutePrefix = "";
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "Todo API");
+}));
 
 app.UseHttpsRedirection();
 
