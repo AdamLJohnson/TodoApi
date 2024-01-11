@@ -8,7 +8,12 @@ using TodoApi.Api.Todos;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("TodoDb"));
+var connectionString = builder.Configuration.GetConnectionString("TodoDb");
+if (string.IsNullOrEmpty(connectionString))
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseInMemoryDatabase("TodoDb"));
+else
+    builder.Services.AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
+
 
 builder.Services.AddControllers();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
