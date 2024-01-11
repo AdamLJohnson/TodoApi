@@ -35,6 +35,16 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+app.Use(async (context, next) =>
+{
+    var hostname = Environment.GetEnvironmentVariable("HOSTNAME") ?? Environment.GetEnvironmentVariable("COMPUTERNAME") ?? "";
+    if (!string.IsNullOrEmpty(hostname))
+    {
+        context.Response.Headers.TryAdd("Pod", hostname);
+    }
+    await next();
+});
+
 app.UseSwagger();
 app.UseSwaggerUI((options =>
 {
