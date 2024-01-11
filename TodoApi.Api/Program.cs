@@ -60,4 +60,10 @@ app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.MapControllers();
 
+if (!string.IsNullOrEmpty(connectionString))
+{
+    var dbInitializer = new DatabaseInitializer(connectionString);
+    await dbInitializer.InitializeAsync();
+}
+
 app.Run();
